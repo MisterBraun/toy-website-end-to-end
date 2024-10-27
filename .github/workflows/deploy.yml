@@ -12,7 +12,7 @@ on:
       reviewApiUrl:
         required: true
         type: string
-      sqlServerAdministratorLoginPassword:
+      sqlServerAdministratorLogin:
         required: true
         type: string
     secrets:
