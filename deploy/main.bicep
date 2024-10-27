@@ -36,8 +36,8 @@ var storageAccountImagesBlobContainerName = 'toyimages'
 var sqlServerName = 'toy-website-${resourceNameSuffix}'
 var sqlDatabaseName = 'Toys'
 
-// Define the connection string to access Azure SQL
-var sqlDatabseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase.name};Persist Security Info=False;User ID=${sqlServerAdministratorLogin};Password=${sqlServerAdministratorLoginPassword};MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;'
+// Define the connection string to access Azure SQL.
+var sqlDatabaseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase.name};Persist Security Info=False;User ID=${sqlServerAdministratorLogin};Password=${sqlServerAdministratorLoginPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
 
 // Define the SKUs for each component based on the environment type.
 var environmentConfigurationMap = {
@@ -124,7 +124,7 @@ resource appServiceApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'SqlDatabaseConnectionString'
-          value: sqlDatabseConnectionString
+          value: sqlDatabaseConnectionString
         }
       ]
     }
@@ -156,10 +156,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 
   resource blobService 'blobServices' = {
     name: 'default'
-    
+
     resource storageAccountImagesBlobContainer 'containers' = {
       name: storageAccountImagesBlobContainerName
-      
+
       properties: {
         publicAccess: 'Blob'
       }
@@ -167,7 +167,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
-resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' = {
+resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   name: sqlServerName
   location: location
   properties: {
@@ -176,19 +176,19 @@ resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' = {
   }
 }
 
-resource sqlServerFirewallRule 'Microsoft.Sql/servers/firewallRules@2023-08-01-preview' = {
-  name: 'AllowAllWindowsAzureIps'
+resource sqlServerFirewallRule 'Microsoft.Sql/servers/firewallRules@2022-05-01-preview' = {
   parent: sqlServer
+  name: 'AllowAllWindowsAzureIps'
   properties: {
     endIpAddress: '0.0.0.0'
     startIpAddress: '0.0.0.0'
   }
 }
 
-resource sqlDatabase 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
+resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
+  parent: sqlServer
   name: sqlDatabaseName
   location: location
-  parent: sqlServer
   sku: environmentConfigurationMap[environmentType].sqlDatabase.sku
 }
 
