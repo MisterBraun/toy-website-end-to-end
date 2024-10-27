@@ -24,7 +24,7 @@ param sqlServerAdministratorLogin string
 
 @secure()
 @description('The administrator login password for the SQL server.')
-param sqlServerAdministartorLoginPassword string
+param sqlServerAdministratorLoginPassword string
 
 // Define the names for resources.
 var appServiceAppName = 'toy-website-${resourceNameSuffix}'
@@ -37,7 +37,7 @@ var sqlServerName = 'toy-website-${resourceNameSuffix}'
 var sqlDatabaseName = 'Toys'
 
 // Define the connection string to access Azure SQL
-var sqlDatabseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase.name};Persist Security Info=False;User ID=${sqlServerAdministratorLogin};Password=${sqlServerAdministartorLoginPassword};MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;'
+var sqlDatabseConnectionString = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase.name};Persist Security Info=False;User ID=${sqlServerAdministratorLogin};Password=${sqlServerAdministratorLoginPassword};MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;'
 
 // Define the SKUs for each component based on the environment type.
 var environmentConfigurationMap = {
@@ -172,7 +172,7 @@ resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' = {
   location: location
   properties: {
     administratorLogin: sqlServerAdministratorLogin
-    administratorLoginPassword: sqlServerAdministartorLoginPassword
+    administratorLoginPassword: sqlServerAdministratorLoginPassword
   }
 }
 
